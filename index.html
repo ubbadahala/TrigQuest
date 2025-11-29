@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TrigQuest</title>
+    <title>TrigQuest: Anti-Cheat Edition</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -51,7 +51,7 @@
             overflow: hidden;
         }
 
-        /* --- Input Field Styling --- */
+        /* Input */
         .name-input {
             width: 80%;
             padding: 1rem;
@@ -65,24 +65,10 @@
             outline: none;
             transition: border-color 0.3s;
         }
+        .name-input:focus { border-color: var(--accent); background: rgba(0, 0, 0, 0.5); }
+        .name-input::placeholder { color: rgba(255, 255, 255, 0.4); }
 
-        .name-input:focus {
-            border-color: var(--accent);
-            background: rgba(0, 0, 0, 0.5);
-        }
-
-        .name-input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-        }
-
-        /* --- Logo & Header --- */
-        .header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
+        /* UI Elements */
         .logo-text {
             font-size: 1.5rem;
             font-weight: 800;
@@ -92,132 +78,43 @@
             margin: 0;
         }
 
-        .player-badge {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            background: rgba(255,255,255,0.05);
-            padding: 4px 10px;
-            border-radius: 12px;
-        }
-
-        .stats-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-bottom: 0.8rem;
-        }
-
+        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .player-badge { font-size: 0.9rem; color: var(--text-muted); background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 12px; }
+        .stats-row { display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.8rem; }
         .score-val { color: var(--accent); font-weight: bold; }
-
-        /* --- Timer --- */
-        .timer-container {
-            width: 100%;
-            height: 6px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            margin-bottom: 1.5rem;
-            overflow: hidden;
-        }
         
-        .timer-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--primary));
-            width: 100%;
-            border-radius: 10px;
-            transition: width 1s linear;
-        }
+        .timer-container { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-bottom: 1.5rem; overflow: hidden; }
+        .timer-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--primary)); width: 100%; border-radius: 10px; transition: width 1s linear; }
 
-        /* --- Canvas --- */
-        .canvas-frame {
-            background: #0b0e14;
-            border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 1.5rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-        }
+        .canvas-frame { background: #0b0e14; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 1.5rem; display: flex; justify-content: center; align-items: center; overflow: hidden; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
         canvas { display: block; max-width: 100%; height: auto; }
 
-        /* --- Gameplay UI --- */
-        .question-box {
-            font-size: 1.2rem;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 1.5rem;
-            min-height: 3rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        .question-box { font-size: 1.2rem; font-weight: 600; text-align: center; margin-bottom: 1.5rem; min-height: 3rem; display: flex; align-items: center; justify-content: center; }
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 0.8rem; }
+        @media (min-width: 450px) { .options-grid { grid-template-columns: 1fr 1fr; } }
 
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 0.8rem;
-        }
-
-        @media (min-width: 450px) {
-            .options-grid { grid-template-columns: 1fr 1fr; }
-        }
-
-        .btn-opt {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-main);
-            padding: 1rem;
-            border-radius: 12px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
+        .btn-opt { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-main); padding: 1rem; border-radius: 12px; font-size: 1rem; cursor: pointer; transition: all 0.2s ease; }
         .btn-opt:active { transform: scale(0.96); }
         .btn-opt.correct { background: rgba(16, 185, 129, 0.2); border-color: var(--success); }
         .btn-opt.wrong { background: rgba(239, 68, 68, 0.2); border-color: var(--error); opacity: 0.6; }
 
-        /* --- Overlays --- */
-        .overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.98);
-            z-index: 50;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            text-align: center;
-            transition: opacity 0.3s;
-        }
-
-        .btn-main {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border: none;
-            padding: 1rem 3rem;
-            color: white;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 50px;
-            cursor: pointer;
-            margin-top: 1.5rem;
-            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
-            transition: transform 0.2s;
-        }
+        .overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.98); z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center; transition: opacity 0.3s; }
+        .btn-main { background: linear-gradient(135deg, var(--primary), var(--accent)); border: none; padding: 1rem 3rem; color: white; font-size: 1.1rem; font-weight: bold; border-radius: 50px; cursor: pointer; margin-top: 1.5rem; box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4); transition: transform 0.2s; }
         .btn-main:hover { transform: scale(1.05); }
         .hidden { opacity: 0; pointer-events: none; }
-
-        /* --- Animations --- */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+        
+        /* High Score Badge */
+        .high-score-display {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #fbbf24; /* Gold */
+            background: rgba(251, 191, 36, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(251, 191, 36, 0.3);
         }
+
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
         .shake-anim { animation: shake 0.4s ease-in-out; }
 
     </style>
@@ -226,15 +123,21 @@
 
     <div class="quest-card" id="card">
         
+        <!-- Start Screen -->
         <div id="start-overlay" class="overlay">
             <h1 style="font-size: 3rem; margin: 0; background: linear-gradient(135deg, var(--accent), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">TrigQuest</h1>
-            <p style="color: var(--text-muted); margin-bottom: 0;">Enter your name to begin</p>
+            <p style="color: var(--text-muted); margin-bottom: 0;">Session Randomized.</p>
             
             <input type="text" id="username" class="name-input" placeholder="Your Name" autocomplete="off" maxlength="12">
             
-            <button class="btn-main" onclick="validateStart()">Start Game</button>
+            <button class="btn-main" onclick="validateStart()">Start Session</button>
+            
+            <div id="high-score-area" class="high-score-display hidden">
+                🏆 Best Score: <span id="high-score-val">0</span>
+            </div>
         </div>
 
+        <!-- End Screen -->
         <div id="end-overlay" class="overlay hidden">
             <h1 style="font-size: 2rem; margin:0;">Quest Complete</h1>
             <p id="end-msg" style="color: var(--text-muted); margin-top: 10px;">Well done!</p>
@@ -243,9 +146,10 @@
                 <span id="final-score">0</span>
             </div>
             <p style="color: var(--text-muted);">Total Score</p>
-            <button class="btn-main" onclick="resetGame()">Play Again</button>
+            <button class="btn-main" onclick="location.reload()">New Session</button>
         </div>
 
+        <!-- Gameplay Header -->
         <div class="header-row">
             <h2 class="logo-text">TrigQuest</h2>
             <span class="player-badge" id="player-badge">Player</span>
@@ -271,21 +175,50 @@
     </div>
 
     <script>
-        // --- DATA ---
-        const questions = [
-            { q: "What is sin(30°)?", options: ["0.5", "1", "√3/2", "√2/2"], answer: 0, type: "special", angle: 30 },
-            { q: "Ratio for Opposite / Hypotenuse?", options: ["Cosine", "Tangent", "Sine", "Secant"], answer: 2, type: "concept" },
-            { q: "What is tan(45°)?", options: ["0", "1", "Undefined", "0.5"], answer: 1, type: "special", angle: 45 },
-            { q: "Find Opposite if Hyp=10, θ=30°", options: ["5", "8.66", "10", "2.5"], answer: 0, type: "calc", angle: 30, hyp: 10 },
-            { q: "What is cos(0°)?", options: ["0", "1", "-1", "Undefined"], answer: 1, type: "special", angle: 0 },
-            { q: "Pythagorean Identity?", options: ["sin²θ + cos²θ = 1", "tan²θ + 1 = sin²θ", "sinθ = cosθ", "a² - b² = c²"], answer: 0, type: "concept" },
+        // --- EXPANDED DATABASE (30 Questions) ---
+        const fullQuestionDatabase = [
+            // SPECIAL ANGLES
+            { q: "What is sin(30°)?", options: ["0.5", "1", "√3/2", "0"], answer: 0, type: "special", angle: 30 },
+            { q: "What is cos(60°)?", options: ["0.5", "√3/2", "1", "0"], answer: 0, type: "special", angle: 60 },
+            { q: "What is tan(45°)?", options: ["1", "0", "Undefined", "0.5"], answer: 0, type: "special", angle: 45 },
             { q: "What is sin(90°)?", options: ["0", "1", "0.5", "-1"], answer: 1, type: "special", angle: 90 },
-            { q: "If Adj=3, Opp=4, Find Hypotenuse", options: ["5", "6", "7", "25"], answer: 0, type: "pythag", a: 3, b: 4 },
-            { q: "Reciprocal of Cosine?", options: ["Sine", "Cosecant", "Cotangent", "Secant"], answer: 3, type: "concept" },
-            { q: "2π radians in degrees?", options: ["180°", "360°", "90°", "270°"], answer: 1, type: "concept" }
+            { q: "What is cos(0°)?", options: ["0", "1", "-1", "Undefined"], answer: 1, type: "special", angle: 0 },
+            { q: "What is sin(45°)?", options: ["√2/2", "0.5", "1", "√3/2"], answer: 0, type: "special", angle: 45 },
+            { q: "What is tan(0°)?", options: ["0", "1", "Undefined", "-1"], answer: 0, type: "special", angle: 0 },
+            
+            // CONCEPTS
+            { q: "Which ratio is Opposite / Hypotenuse?", options: ["Sine", "Cosine", "Tangent", "Secant"], answer: 0, type: "concept" },
+            { q: "Which ratio is Adjacent / Hypotenuse?", options: ["Sine", "Cosine", "Tangent", "Cosecant"], answer: 1, type: "concept" },
+            { q: "Which ratio is Opposite / Adjacent?", options: ["Tangent", "Sine", "Cosine", "Cotangent"], answer: 0, type: "concept" },
+            { q: "Pythagorean Identity?", options: ["sin²θ + cos²θ = 1", "tan²θ + 1 = sin²θ", "sinθ = cosθ", "a² + b² = c"], answer: 0, type: "concept" },
+            { q: "Reciprocal of Sine?", options: ["Cosecant", "Secant", "Cotangent", "Cosine"], answer: 0, type: "concept" },
+            { q: "Reciprocal of Cosine?", options: ["Secant", "Cosecant", "Tangent", "Sine"], answer: 0, type: "concept" },
+            { q: "Reciprocal of Tangent?", options: ["Cotangent", "Secant", "Cosecant", "Sine"], answer: 0, type: "concept" },
+            
+            // RADIANS
+            { q: "Convert π radians to degrees", options: ["180°", "360°", "90°", "270°"], answer: 0, type: "concept" },
+            { q: "Convert π/2 radians to degrees", options: ["90°", "45°", "180°", "60°"], answer: 0, type: "special", angle: 90 },
+            { q: "Convert 2π radians to degrees", options: ["360°", "180°", "720°", "90°"], answer: 0, type: "concept" },
+            { q: "Convert π/6 radians to degrees", options: ["30°", "60°", "45°", "90°"], answer: 0, type: "special", angle: 30 },
+
+            // CALCULATIONS & PYTHAGORAS
+            { q: "Hyp=10, θ=30°, find Opposite", options: ["5", "8.66", "10", "2.5"], answer: 0, type: "calc", angle: 30, hyp: 10 },
+            { q: "Hyp=4, θ=60°, find Adjacent", options: ["2", "3.46", "4", "1"], answer: 0, type: "calc", angle: 60, hyp: 4 }, // cos60 is 0.5
+            { q: "Tri: 3, 4, ?", options: ["5", "6", "7", "25"], answer: 0, type: "pythag", a: 3, b: 4 },
+            { q: "Tri: 5, 12, ?", options: ["13", "17", "15", "10"], answer: 0, type: "pythag", a: 5, b: 12 },
+            { q: "Tri: 6, 8, ?", options: ["10", "14", "12", "100"], answer: 0, type: "pythag", a: 6, b: 8 },
+            
+            // ADVANCED / QUADRANTS
+            { q: "In which Quadrant is Sine positive?", options: ["I & II", "I & IV", "II & III", "All"], answer: 0, type: "concept" },
+            { q: "In which Quadrant is Cosine positive?", options: ["I & IV", "I & II", "II & III", "III & IV"], answer: 0, type: "concept" },
+            { q: "Value of sin(180°)?", options: ["0", "1", "-1", "Undefined"], answer: 0, type: "concept" },
+            { q: "Value of cos(180°)?", options: ["-1", "0", "1", "Undefined"], answer: 0, type: "concept" },
+            { q: "If tan(θ) > 0, θ is in...", options: ["I or III", "I or II", "II or IV", "I only"], answer: 0, type: "concept" },
+            { q: "Is sin(30°) = cos(60°)?", options: ["True", "False", "Only in Q1", "Impossible"], answer: 0, type: "special", angle: 30 }
         ];
 
         // --- STATE ---
+        let currentQuestions = []; // The shuffled subset of 10
         let playerName = "";
         let qIdx = 0;
         let score = 0;
@@ -308,44 +241,67 @@
             opts: document.getElementById('options-container'),
             timer: document.getElementById('timer-bar'),
             feedback: document.getElementById('feedback'),
-            canvas: document.getElementById('questCanvas')
+            canvas: document.getElementById('questCanvas'),
+            highScoreDisplay: document.getElementById('high-score-display'),
+            highScoreArea: document.getElementById('high-score-area'),
+            highScoreVal: document.getElementById('high-score-val')
         };
         const ctx = els.canvas.getContext('2d');
 
-        // --- NEW: Input Validation ---
+        // --- INIT & STORAGE ---
+        window.onload = function() {
+            // Load High Score from LocalStorage
+            const savedScore = localStorage.getItem('trigQuestHighScore');
+            if (savedScore) {
+                els.highScoreVal.textContent = savedScore;
+                els.highScoreArea.classList.remove('hidden');
+            }
+        };
+
+        // --- SHUFFLE ENGINE ---
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
         function validateStart() {
             const name = els.username.value.trim();
             if (name.length === 0) {
-                // Shake animation for error
                 els.username.style.borderColor = 'var(--error)';
                 els.username.classList.add('shake-anim');
                 setTimeout(() => els.username.classList.remove('shake-anim'), 400);
                 return;
             }
-            
             playerName = name;
-            els.playerBadge.textContent = playerName; // Update gameplay header
+            els.playerBadge.textContent = playerName;
             startGame();
         }
 
         function startGame() {
             qIdx = 0;
             score = 0;
+            
+            // 1. Create a deep copy of the database to avoid messing up original order
+            let dbCopy = [...fullQuestionDatabase];
+            
+            // 2. Shuffle the database
+            shuffleArray(dbCopy);
+            
+            // 3. Select first 10
+            currentQuestions = dbCopy.slice(0, 10);
+
             els.start.classList.add('hidden');
             els.end.classList.add('hidden');
             els.score.textContent = '0';
             loadQuestion();
         }
 
-        function resetGame() {
-            // Keep the name, just restart the loop
-            startGame();
-        }
-
         function loadQuestion() {
-            if (qIdx >= questions.length) return endGame();
+            if (qIdx >= currentQuestions.length) return endGame();
 
-            const q = questions[qIdx];
+            const q = currentQuestions[qIdx];
             active = true;
             els.qNum.textContent = qIdx + 1;
             els.qText.textContent = q.q;
@@ -355,6 +311,8 @@
 
             drawGraphPaper(q);
 
+            // Note: We do NOT shuffle the options here, because 'q.answer' points to a specific index.
+            // If we shuffled options, we'd need to remap the answer index.
             q.options.forEach((opt, idx) => {
                 const btn = document.createElement('button');
                 btn.className = 'btn-opt';
@@ -385,7 +343,7 @@
             active = false;
             clearInterval(timerInt);
 
-            const q = questions[qIdx];
+            const q = currentQuestions[qIdx];
             if (idx === q.answer) {
                 btn.classList.add('correct');
                 score += (10 + timeLeft);
@@ -404,7 +362,7 @@
 
         function timeOut() {
             active = false;
-            const q = questions[qIdx];
+            const q = currentQuestions[qIdx];
             els.opts.children[q.answer].classList.add('correct');
             els.card.classList.add('shake-anim');
             els.feedback.textContent = "TIME'S UP!";
@@ -415,11 +373,18 @@
         function endGame() {
             els.end.classList.remove('hidden');
             els.finalScore.textContent = score;
-            // Personalized Message
-            els.endMsg.textContent = `Great run, ${playerName}!`;
+            
+            // SAVE HIGH SCORE
+            const currentHigh = localStorage.getItem('trigQuestHighScore') || 0;
+            if (score > currentHigh) {
+                localStorage.setItem('trigQuestHighScore', score);
+                els.endMsg.innerHTML = `🏆 NEW HIGH SCORE, ${playerName}!`;
+            } else {
+                els.endMsg.textContent = `Good game, ${playerName}!`;
+            }
         }
 
-        // --- DRAWING ENGINE (Unchanged) ---
+        // --- DRAWING ENGINE ---
         function drawGraphPaper(q) {
             ctx.clearRect(0, 0, els.canvas.width, els.canvas.height);
             // Grid
@@ -444,9 +409,14 @@
                 ctx.fillStyle = '#fff'; if(q.hyp) ctx.fillText("H="+q.hyp, startX + (adj/2), startY - (opp/2) - 15);
             }
             else if (q.type === 'pythag') {
-                let adj = 3 * 25; let opp = 4 * 25;
+                let a = q.a || 3; let b = q.b || 4;
+                // Normalize visualization slightly
+                let mult = 25;
+                if(a > 5 || b > 5) mult = 15; // Shrink large pythagorean triples
+                let adj = a * mult; let opp = b * mult;
+                
                 ctx.beginPath(); ctx.moveTo(startX, startY); ctx.lineTo(startX + adj, startY); ctx.lineTo(startX + adj, startY - opp); ctx.closePath(); ctx.stroke();
-                ctx.fillText("3", startX + 35, startY + 20); ctx.fillText("4", startX + adj + 10, startY - 50); ctx.fillText("?", startX + 30, startY - 60);
+                ctx.fillText(a, startX + (adj/2), startY + 20); ctx.fillText(b, startX + adj + 10, startY - (opp/2)); ctx.fillText("?", startX + (adj/2) - 10, startY - (opp/2) - 10);
             }
         }
     </script>
